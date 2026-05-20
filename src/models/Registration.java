@@ -1,6 +1,8 @@
 package models;
 
 import enums.RegistrationStatus;
+import exceptions.CreditLimitExceededException;
+import exceptions.RetakeLimitExceededException;
 
 public class Registration {
     private Student student;
@@ -18,7 +20,8 @@ public class Registration {
         for (Course c : student.getCourses()) {
             enrolled += c.getCredits();
         }
-        return enrolled + course.getCredits() <= 21;
+        if (enrolled + course.getCredits() > 21) throw new CreditLimitExceededException("Credit limit of 21 exceeded.");
+        return true;
     }
 
     public boolean checkRetakeLimit() {
@@ -26,7 +29,8 @@ public class Registration {
         for (Mark mark : student.viewMark()) {
             if (!mark.isPassed()) failures++;
         }
-        return failures < 3;
+        if (failures >= 3) throw new RetakeLimitExceededException("Retake limit of 3 exceeded.");
+        return true;
     }
 
     public boolean checkPrerequisites() {

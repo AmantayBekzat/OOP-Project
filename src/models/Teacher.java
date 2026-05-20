@@ -51,15 +51,17 @@ public class Teacher extends Employee implements Researcher {
     }
 
     public int calculateHIndex() {
-        List<ResearchPaper> sorted = new ArrayList<>(papers);
-        sorted.sort((a, b) -> b.getCitations() - a.getCitations());
+        if (papers == null || papers.isEmpty()) return 0;
+        List<Integer> citations = new ArrayList<>();
+        for (ResearchPaper p : papers) {
+            if (p != null) citations.add(p.getCitations());
+        }
+        if (citations.isEmpty()) return 0;
+        citations.sort((a, b) -> b - a);
         int h = 0;
-        for (int i = 0; i < sorted.size(); i++) {
-            if (sorted.get(i).getCitations() >= i + 1) {
-                h = i + 1;
-            } else {
-                break;
-            }
+        for (int i = 0; i < citations.size(); i++) {
+            if (citations.get(i) >= i + 1) h = i + 1;
+            else break;
         }
         return h;
     }

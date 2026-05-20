@@ -15,5 +15,10 @@ public class Lesson {
         this.date = date;
     }
 
-    public String getLessonInfo(){return null;}
+    public String getLessonInfo() {
+        String t = (topic != null && !topic.isEmpty()) ? topic : "N/A";
+        String lt = (lessonType != null) ? lessonType.name() : "N/A";
+        String d = (date != null) ? String.valueOf(date) : "N/A";
+        return "Topic: " + t + " | Type: " + lt + " | Date: " + d;
+    }
 }

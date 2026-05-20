@@ -1,5 +1,6 @@
 package models;
 import enums.Language;
+import exceptions.AuthenticationException;
 
 public abstract class User {
     private int id;
@@ -7,13 +8,15 @@ public abstract class User {
     private String password;
     private String name;
     private Language language;
+    private boolean loggedIn;
 
-    public User(int id, String username, String password, String name, Language language){
+    public User(int id, String username, String password, String name, Language language) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.language = language;
+        this.loggedIn = false;
     }
 
     public int getId() { return id; }
@@ -25,13 +28,23 @@ public abstract class User {
     public void setLanguage(Language language) { this.language = language; }
     public void setName(String name) { this.name = name; }
 
-    public boolean login(){
-        return username != null && password != null;
+    public boolean login() {
+        if (username == null || username.isEmpty()) throw new AuthenticationException("Username is missing.");
+        if (password == null || password.isEmpty()) throw new AuthenticationException("Password is missing.");
+        loggedIn = true;
+        return true;
     }
-    public void logout(){
+
+    public void logout() {
+        loggedIn = false;
         System.out.println(name + " logged out.");
     }
-    public void receiveNotification(Notification notification){
+
+    public boolean isAuthenticated() {
+        return loggedIn;
+    }
+
+    public void receiveNotification(Notification notification) {
         notification.send();
     }
 }

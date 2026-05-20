@@ -15,12 +15,21 @@ public class Request {
         this.status = RequestStatus.NEW;
     }
 
+    public void view() {
+        this.status = RequestStatus.VIEWED;
+    }
+
     public void accept() {
-        this.status = RequestStatus.ACCEPTED;
+        if (status == RequestStatus.VIEWED) this.status = RequestStatus.ACCEPTED;
     }
 
     public void reject() {
-        this.status = RequestStatus.REJECTED;
+        if (status == RequestStatus.VIEWED) this.status = RequestStatus.REJECTED;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{description='" + description + "', status=" + status + "}";
     }
 
     public String getDescription() { return description; }

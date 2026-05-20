@@ -16,11 +16,18 @@ public class Message {
         this.date = new Date();
     }
 
+    public Message(String content, User receiver) {
+        this.content = content;
+        this.receiver = receiver;
+        this.date = new Date();
+    }
+
     public void send() {
         System.out.println("[" + date + "] " + content);
     }
 
     public User getReceiver() { return receiver; }
+    public void setReceiver(User receiver) { this.receiver = receiver; }
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }

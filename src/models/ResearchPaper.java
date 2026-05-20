@@ -45,6 +45,7 @@ public class ResearchPaper {
 
     public int getCitations() { return citations; }
     public void setCitations(int citations) { this.citations = citations; }
+    public void addCitation(int count) { if (count > 0) this.citations += count; }
 
     public int getPages() { return pages; }
     public void setPages(int pages) { this.pages = pages; }
