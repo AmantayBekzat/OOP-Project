@@ -1,8 +1,9 @@
 package models;
 import enums.Language;
 import exceptions.AuthenticationException;
+import interfaces.Observer;
 
-public abstract class User {
+public abstract class User implements Observer {
     private int id;
     private String username;
     private String password;
@@ -46,5 +47,10 @@ public abstract class User {
 
     public void receiveNotification(Notification notification) {
         notification.send();
+    }
+
+    @Override
+    public void update(String message) {
+        receiveNotification(new Notification(message));
     }
 }

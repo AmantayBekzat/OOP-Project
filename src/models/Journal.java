@@ -1,12 +1,15 @@
 package models;
 
+import interfaces.Observable;
+import interfaces.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Journal {
+public class Journal implements Observable {
     private String name;
     private String description;
-    private List<User> subscribers;
+    private List<Observer> subscribers;
     private List<ResearchPaper> papers;
 
     public Journal(String name, String description) {
@@ -16,32 +19,28 @@ public class Journal {
         this.papers = new ArrayList<>();
     }
 
-    public void subscribe(User user) {
-        if (user == null || subscribers.contains(user)) return;
-        subscribers.add(user);
+    @Override
+    public void subscribe(Observer observer) {
+        if (observer == null || subscribers.contains(observer)) return;
+        subscribers.add(observer);
     }
 
-    public void unsubscribe(User user) {
-        subscribers.remove(user);
+    @Override
+    public void unsubscribe(Observer observer) {
+        subscribers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String message) {
+        for (Observer observer : subscribers) {
+            observer.update(message);
+        }
     }
 
     public void addPaper(ResearchPaper paper) {
         if (paper == null) return;
         papers.add(paper);
-        notifySubscribers(paper);
-    }
-
-    public void notifySubscribers() {
-        for (User user : subscribers) {
-            System.out.println("Notification: New paper published in journal " + name);
-        }
-    }
-
-    private void notifySubscribers(ResearchPaper paper) {
-        for (User user : subscribers) {
-            System.out.println("Notification: New paper published in journal " + name);
-            System.out.println("  " + paper.getTitle());
-        }
+        notifyObservers("New paper in journal \"" + name + "\": " + paper.getTitle());
     }
 
     public String getName() { return name; }
@@ -50,6 +49,6 @@ public class Journal {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public List<User> getSubscribers() { return subscribers; }
+    public List<Observer> getSubscribers() { return subscribers; }
     public List<ResearchPaper> getPapers() { return papers; }
 }
